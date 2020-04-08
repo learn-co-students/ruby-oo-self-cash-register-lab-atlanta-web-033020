@@ -11,7 +11,13 @@ class CashRegister
 
     def add_item(title, price, quantity = 1)
         self.total += (price * quantity)
-        quantity.times do @items << {title => [price,quantity]} end
+        quantity.times do @items << {
+            title => {
+                :price => price, 
+                :quantity => quantity
+                } 
+            }
+        end
         # binding.pry
     end
 
@@ -33,10 +39,12 @@ class CashRegister
         item_names
     end
 
-    def void_last_transaction()
+    def void_last_transaction
+        binding.pry
         item = @items.pop()
-        self.total -= item[item.keys[0]][0]*item[item.keys[0]][1]
-        #binding.pry
+        #finding name of item to use as key
+        key = item.keys.first
+        self.total -= (item[key][:price] * item[key][:quantity])
     end
 
 end
